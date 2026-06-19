@@ -1,6 +1,7 @@
 {
   "name": "bsdata-parser",
   "version": "0.0.0",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "Faithful BSData -> IR parser with a golden-diff harness for validating a downstream projection against a reference output.",
