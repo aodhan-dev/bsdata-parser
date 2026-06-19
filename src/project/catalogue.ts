@@ -1,9 +1,4 @@
 import type { Ir } from '../ir/types.ts'
-import type { RawCatalogue } from './types.ts'
-import { projectCategories, projectParentFactions, projectFactionAllegiance } from './categories.ts'
-import { projectDetachments, projectRites, projectDoctrines, projectPrimeBenefits, projectFactionPrimeBenefits } from './force-org.ts'
-import { projectUnits } from './units.ts'
-import { projectGlossary, projectOaths, projectAssets, projectShatteredLegions, projectFactionRewardsOfTreachery } from './misc.ts'
 
 /**
  * IR -> downstream projection.
@@ -16,22 +11,10 @@ import { projectGlossary, projectOaths, projectAssets, projectShatteredLegions, 
  * "Superset" is the contract: the projection MUST reproduce every field the reference output carries
  * (so the existing consumer keeps working unchanged), and MAY add fields the current consumer lacks.
  * The golden-diff harness asserts the reproduction half; new fields are additive and ignored.
+ *
+ * STUB. Supply a local implementation that imports your projector modules. The local file is
+ * gitignored so it never reaches this public repo. See CLAUDE.md for the hygiene rule.
  */
-export function projectCatalogue(ir: Ir): RawCatalogue {
-  return {
-    categories: projectCategories(ir),
-    parentFactions: projectParentFactions(ir),
-    factionAllegiance: projectFactionAllegiance(ir),
-    detachments: projectDetachments(ir),
-    rites: projectRites(ir),
-    doctrines: projectDoctrines(ir),
-    primeBenefits: projectPrimeBenefits(ir),
-    factionPrimeBenefits: projectFactionPrimeBenefits(ir),
-    units: projectUnits(ir),
-    glossary: projectGlossary(ir),
-    oaths: projectOaths(ir),
-    assets: projectAssets(ir),
-    shatteredLegions: projectShatteredLegions(ir),
-    factionRewardsOfTreachery: projectFactionRewardsOfTreachery(ir),
-  }
+export function projectCatalogue(_ir: Ir): Record<string, unknown> {
+  return {}
 }
