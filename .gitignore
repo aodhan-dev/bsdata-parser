@@ -16,3 +16,9 @@ oracle.json
 
 # Local-only scripts (hardcoded paths, not portable)
 /scripts/
+
+# Local-only projector (domain-specific projection code, never committed - see CLAUDE.md).
+# The committed src/project/catalogue.ts stub stays tracked; new module files added here are not.
+/src/project/*.ts
+!/src/project/catalogue.ts
+/src/project/*/
