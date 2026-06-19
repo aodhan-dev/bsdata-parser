@@ -143,6 +143,7 @@ export interface IrEntryLink {
   targetId: string
   type: string
   defaultAmount?: number
+  comment?: string
   constraints: IrConstraint[]
   costs: IrCost[]
   modifiers: IrModifier[]
@@ -160,10 +161,37 @@ export interface IrCategoryEntry {
   hidden: boolean
 }
 
+export interface IrForceCategoryLink {
+  id: string
+  targetId: string
+  primary: boolean
+  hidden: boolean
+  constraints: IrConstraint[]
+}
+
+export interface IrForceEntry {
+  id: string
+  name: string
+  hidden: boolean
+  categoryLinks: IrForceCategoryLink[]
+  rules: IrRule[]
+  modifiers: IrModifier[]
+  forceEntries: IrForceEntry[]
+}
+
 export interface IrCostType {
   id: string
   name: string
   defaultCostLimit: number
+}
+
+/** A BSData catalogueLink node: references another catalogue this one imports from. */
+export interface IrCatalogueLink {
+  id: string
+  name: string
+  targetId: string
+  type: string
+  importRootEntries: boolean
 }
 
 export interface IrProfileType {
@@ -177,9 +205,15 @@ export interface IrCatalogueRoot {
   profileTypes: IrProfileType[]
   categoryEntries: IrCategoryEntry[]
   rules: IrRule[]
+  /** Rules from the BSData &lt;sharedRules&gt; element: the canonical rule-definition pool. */
+  sharedRules: IrRule[]
+  /** Profiles from the BSData &lt;sharedProfiles&gt; element: abilities with Summary/Description characteristics. */
+  sharedProfiles: IrProfile[]
+  selectionEntries: IrSelectionEntry[]
   sharedSelectionEntries: IrSelectionEntry[]
   sharedSelectionEntryGroups: IrSelectionEntryGroup[]
   entryLinks: IrEntryLink[]
+  forceEntries: IrForceEntry[]
 }
 
 /** A single parsed BSData file (game system or catalogue). */
@@ -189,6 +223,7 @@ export interface IrCatalogueFile {
   id: string
   name: string
   gameSystemId?: string
+  catalogueLinks: IrCatalogueLink[]
   root: IrCatalogueRoot
 }
 

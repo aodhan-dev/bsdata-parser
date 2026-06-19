@@ -7,6 +7,8 @@ import type {
   IrSelectionEntry, IrSelectionEntryGroup, IrEntryLink,
   IrCostType, IrProfileType, IrCategoryEntry,
   IrEntryType,
+  IrForceCategoryLink, IrForceEntry,
+  IrCatalogueLink,
 } from '../ir/types.ts'
 
 const ALWAYS_ARRAY = new Set([
@@ -15,6 +17,7 @@ const ALWAYS_ARRAY = new Set([
   'cost', 'costType', 'profileType',
   'rule', 'categoryLink', 'categoryEntry',
   'infoLink', 'modifier', 'condition', 'conditionGroup', 'repeat',
+  'forceEntry', 'catalogueLink',
 ])
 
 const xmlParser = new XMLParser({
@@ -205,6 +208,7 @@ function parseEntryLink(n: any): IrEntryLink {
     targetId: String(n['@_targetId'] ?? ''),
     type: String(n['@_type'] ?? ''),
     ...(n['@_defaultAmount'] != null ? { defaultAmount: Number(n['@_defaultAmount']) } : {}),
+    ...(n.comment != null ? { comment: String(n.comment).trim() } : {}),
     constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
     costs: arr<any>(n.costs?.cost).map(parseCost),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
@@ -214,6 +218,42 @@ function parseEntryLink(n: any): IrEntryLink {
     selectionEntries: arr<any>(n.selectionEntries?.selectionEntry).map(parseSelectionEntry),
     selectionEntryGroups: arr<any>(n.selectionEntryGroups?.selectionEntryGroup).map(parseSelectionEntryGroup),
     entryLinks: arr<any>(n.entryLinks?.entryLink).map(parseEntryLink),
+  }
+}
+
+// ---- force entry parsers ----
+
+function parseForceCategoryLink(n: any): IrForceCategoryLink {
+  return {
+    id: String(n['@_id'] ?? ''),
+    targetId: String(n['@_targetId'] ?? ''),
+    primary: bool(n['@_primary']),
+    hidden: bool(n['@_hidden']),
+    constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
+  }
+}
+
+function parseForceEntry(n: any): IrForceEntry {
+  return {
+    id: String(n['@_id'] ?? ''),
+    name: String(n['@_name'] ?? ''),
+    hidden: bool(n['@_hidden']),
+    categoryLinks: arr<any>(n.categoryLinks?.categoryLink).map(parseForceCategoryLink),
+    rules: arr<any>(n.rules?.rule).map(parseRule),
+    modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    forceEntries: arr<any>(n.forceEntries?.forceEntry).map(parseForceEntry),
+  }
+}
+
+// ---- catalogue link parser ----
+
+function parseCatalogueLink(n: any): IrCatalogueLink {
+  return {
+    id: String(n['@_id'] ?? ''),
+    name: String(n['@_name'] ?? ''),
+    targetId: String(n['@_targetId'] ?? ''),
+    type: String(n['@_type'] ?? ''),
+    importRootEntries: bool(n['@_importRootEntries']),
   }
 }
 
@@ -240,9 +280,13 @@ function parseCatalogueRoot(r: any): IrCatalogueRoot {
       hidden: bool(n['@_hidden']),
     })),
     rules: arr<any>(r.rules?.rule).map(parseRule),
+    sharedRules: arr<any>(r.sharedRules?.rule).map(parseRule),
+    sharedProfiles: arr<any>(r.sharedProfiles?.profile).map(parseProfile),
+    selectionEntries: arr<any>(r.selectionEntries?.selectionEntry).map(parseSelectionEntry),
     sharedSelectionEntries: arr<any>(r.sharedSelectionEntries?.selectionEntry).map(parseSelectionEntry),
     sharedSelectionEntryGroups: arr<any>(r.sharedSelectionEntryGroups?.selectionEntryGroup).map(parseSelectionEntryGroup),
     entryLinks: arr<any>(r.entryLinks?.entryLink).map(parseEntryLink),
+    forceEntries: arr<any>(r.forceEntries?.forceEntry).map(parseForceEntry),
   }
 }
 
@@ -259,6 +303,7 @@ export function parseFile(filename: string, xml: string): IrCatalogueFile {
     id: String(root['@_id'] ?? ''),
     name: String(root['@_name'] ?? ''),
     ...(root['@_gameSystemId'] != null ? { gameSystemId: String(root['@_gameSystemId']) } : {}),
+    catalogueLinks: arr<any>(root.catalogueLinks?.catalogueLink).map(parseCatalogueLink),
     root: parseCatalogueRoot(root),
   }
 }
