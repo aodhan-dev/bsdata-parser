@@ -1,5 +1,6 @@
 node_modules/
 dist/
+*.tsbuildinfo
 
 # No third-party game data is ever committed. The harness reads it from a local directory you
 # point BSDATA_DIR at (see harness/oracle.ts). Belt-and-braces patterns below.
