@@ -5,6 +5,10 @@ dist/
 # point BSDATA_DIR at (see harness/oracle.ts). Belt-and-braces patterns below.
 /local/
 /fixtures/
+
+# Local-only source design specs copied from the Warhost repo for reference. They name the
+# downstream game/IP, so they are NEVER committed to this public repo (see CLAUDE.md hygiene rule).
+/docs/_local-specs/
 *.cat
 *.gst
 catalogue.json
