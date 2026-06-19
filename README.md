@@ -113,24 +113,39 @@ export function buildOutput(files: Record<string, string>): MyOutput {
 
 ## Golden-diff harness
 
-The harness lets you validate that your projector reproduces a known-good reference output as a superset. It is domain-agnostic and works for any BSData game system.
+The `harness/` directory contains utilities for validating that your projector reproduces a known-good reference output as a superset. Copy or adapt these into your own project:
+
+- `harness/oracle.ts` - `loadBsdata()`, `loadOracle()`, `hasData()` (reads from `BSDATA_DIR`)
+- `harness/diff.ts` - `diffCatalogues(oracle, candidate)` - counts-based diff, domain-agnostic
 
 Set `BSDATA_DIR` to a local directory containing:
 - `bsdata/` - the `.cat`/`.gst` source files
 - `catalogue.json` - a reference output to diff against
 
 ```typescript
-// harness/golden-parity.test.ts (in your project)
+// your-project/harness/golden-parity.test.ts
 import { describe, it, expect } from 'vitest'
-import { loadBsdata, loadOracle, hasData } from 'bsdata-parser/harness' // if re-exported
-import { diffCatalogues } from 'bsdata-parser/harness'
+import { readFile, readdir } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { buildOutput } from './my-projector'
+
+const dir = process.env.BSDATA_DIR ?? ''
+const hasData = () => existsSync(join(dir, 'catalogue.json'))
 
 describe.skipIf(!hasData())('golden parity', () => {
   it('reproduces every oracle collection', async () => {
-    const [files, oracle] = await Promise.all([loadBsdata(), loadOracle()])
+    const oracle = JSON.parse(await readFile(join(dir, 'catalogue.json'), 'utf-8'))
+    const names = (await readdir(join(dir, 'bsdata'))).filter(f => f.endsWith('.cat') || f.endsWith('.gst'))
+    const files: Record<string, string> = {}
+    await Promise.all(names.map(async n => { files[n] = await readFile(join(dir, 'bsdata', n), 'utf-8') }))
     const candidate = buildOutput(files)
-    expect(diffCatalogues(oracle, candidate)).toEqual([])
+    // diff: for every key in oracle, compare collection size
+    const diffs = Object.keys(oracle).filter(k => {
+      const size = (v: unknown) => Array.isArray(v) ? v.length : v && typeof v === 'object' ? Object.keys(v as object).length : 0
+      return size(oracle[k]) !== size((candidate as Record<string, unknown>)[k])
+    })
+    expect(diffs).toEqual([])
   })
 })
 ```
