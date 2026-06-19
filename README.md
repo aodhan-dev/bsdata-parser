@@ -1,4 +1,4 @@
-# warhost-parser
+# bsdata-parser
 
 A faithful parser for [BSData](https://github.com/BSData) XML into an intermediate representation
 (IR), plus a golden-diff harness for validating a downstream projection of that IR against a
@@ -26,7 +26,7 @@ BSData (.gst/.cat)  ──parse──▶  IR (faithful tree)  ──project─�
 ## Data (local only, never committed)
 
 No data is bundled with this repo. The BSData source files and the reference output are third-party
-content you assemble yourself. Point the `WARHOST_DATA_DIR` environment variable at a local directory
+content you assemble yourself. Point the `BSDATA_DIR` environment variable at a local directory
 containing:
 
 - `bsdata/` — the `.cat`/`.gst` source set (input to the parser)
@@ -37,7 +37,7 @@ Everything under that directory stays outside the repo. The concrete domain proj
 
 ## Commands
 
-- `npm test` — unit suite plus the golden-parity test (auto-skips unless `WARHOST_DATA_DIR` is set,
+- `npm test` — unit suite plus the golden-parity test (auto-skips unless `BSDATA_DIR` is set,
   so it runs cleanly anywhere, including CI with no data).
 - `npm run golden` — run the golden diff against the local reference and print the gap.
 - `npm run build` — build a local output from the local source with the parser.

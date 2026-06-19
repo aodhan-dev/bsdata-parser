@@ -1,4 +1,4 @@
-# warhost-parser (project instructions)
+# bsdata-parser (project instructions)
 
 Faithful BSData parser rebuild: BSData XML → IR → downstream projection, validated by a golden-diff
 harness against a reference output. See `README.md` for the design. Global rules in

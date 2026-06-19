@@ -8,7 +8,7 @@ import { diffCatalogues } from './diff.ts'
  * catalogue (as a superset). It is the red baseline today (the parser is a stub) and the green
  * target the rebuild is finished against.
  *
- * Skips automatically unless WARHOST_DATA_DIR points at a directory with the data, so the unit
+ * Skips automatically unless BSDATA_DIR points at a directory with the data, so the unit
  * suite runs everywhere (including public CI, which carries no game data).
  */
 describe.skipIf(!hasData())('golden parity against the reference catalogue', () => {

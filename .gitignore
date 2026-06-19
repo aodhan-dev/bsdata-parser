@@ -2,7 +2,7 @@ node_modules/
 dist/
 
 # No third-party game data is ever committed. The harness reads it from a local directory you
-# point WARHOST_DATA_DIR at (see harness/oracle.ts). Belt-and-braces patterns below.
+# point BSDATA_DIR at (see harness/oracle.ts). Belt-and-braces patterns below.
 /local/
 /fixtures/
 *.cat

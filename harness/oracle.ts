@@ -4,16 +4,16 @@ import { join } from 'node:path'
 
 /**
  * Resolves the local data directory used by the golden-diff harness. No game data is bundled with
- * this repo (it is third-party copyrighted content, see .gitignore). Point WARHOST_DATA_DIR at a
+ * this repo (it is third-party copyrighted content, see .gitignore). Point BSDATA_DIR at a
  * local directory you have assembled yourself, containing:
  *   - `bsdata/`        the BSData `.cat`/`.gst` source set  -> input to the parser
  *   - `catalogue.json` a reference catalogue                -> the oracle to diff against
  */
 export function dataDir(): string {
-  const dir = process.env.WARHOST_DATA_DIR
+  const dir = process.env.BSDATA_DIR
   if (!dir) {
     throw new Error(
-      'Set WARHOST_DATA_DIR to a local directory containing bsdata/ and catalogue.json.',
+      'Set BSDATA_DIR to a local directory containing bsdata/ and catalogue.json.',
     )
   }
   return dir
