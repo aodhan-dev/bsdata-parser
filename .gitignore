@@ -13,3 +13,6 @@ dist/
 *.gst
 catalogue.json
 oracle.json
+
+# Local-only scripts (hardcoded paths, not portable)
+/scripts/
