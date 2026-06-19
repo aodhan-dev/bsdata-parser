@@ -87,6 +87,18 @@ export interface IrModifier {
   repeats: IrRepeat[]
 }
 
+/**
+ * A BSData modifierGroup node: a block of modifiers that share a common set of conditions.
+ * Equivalent to a conditional modifier block - the conditions guard when ALL the inner modifiers apply.
+ */
+export interface IrModifierGroup {
+  type: string
+  modifiers: IrModifier[]
+  conditions: IrCondition[]
+  conditionGroups: IrConditionGroup[]
+  modifierGroups: IrModifierGroup[]
+}
+
 export interface IrRepeat {
   value: number
   repeats: number
@@ -115,6 +127,7 @@ export interface IrSelectionEntry {
   categoryLinks: IrCategoryLink[]
   costs: IrCost[]
   modifiers: IrModifier[]
+  modifierGroups?: IrModifierGroup[]
   selectionEntries: IrSelectionEntry[]
   selectionEntryGroups: IrSelectionEntryGroup[]
   entryLinks: IrEntryLink[]
@@ -129,6 +142,7 @@ export interface IrSelectionEntryGroup {
   defaultSelectionEntryId?: string
   constraints: IrConstraint[]
   modifiers: IrModifier[]
+  modifierGroups?: IrModifierGroup[]
   selectionEntries: IrSelectionEntry[]
   selectionEntryGroups: IrSelectionEntryGroup[]
   entryLinks: IrEntryLink[]
@@ -147,6 +161,7 @@ export interface IrEntryLink {
   constraints: IrConstraint[]
   costs: IrCost[]
   modifiers: IrModifier[]
+  modifierGroups?: IrModifierGroup[]
   profiles: IrProfile[]
   infoLinks: IrInfoLink[]
   categoryLinks: IrCategoryLink[]
@@ -173,6 +188,7 @@ export interface IrForceEntry {
   id: string
   name: string
   hidden: boolean
+  constraints: IrConstraint[]
   categoryLinks: IrForceCategoryLink[]
   rules: IrRule[]
   modifiers: IrModifier[]

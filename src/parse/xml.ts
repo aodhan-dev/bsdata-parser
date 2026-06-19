@@ -3,7 +3,7 @@ import type {
   IrCatalogueFile, IrCatalogueRoot,
   IrConstraint, IrCost, IrProfile, IrCharacteristic,
   IrRule, IrInfoLink, IrCategoryLink,
-  IrModifier, IrCondition, IrConditionGroup, IrRepeat,
+  IrModifier, IrModifierGroup, IrCondition, IrConditionGroup, IrRepeat,
   IrSelectionEntry, IrSelectionEntryGroup, IrEntryLink,
   IrCostType, IrProfileType, IrCategoryEntry,
   IrEntryType,
@@ -17,7 +17,7 @@ const ALWAYS_ARRAY = new Set([
   'cost', 'costType', 'profileType',
   'rule', 'categoryLink', 'categoryEntry',
   'infoLink', 'modifier', 'condition', 'conditionGroup', 'repeat',
-  'forceEntry', 'catalogueLink',
+  'forceEntry', 'catalogueLink', 'modifierGroup',
 ])
 
 const xmlParser = new XMLParser({
@@ -156,9 +156,20 @@ function parseModifier(n: any): IrModifier {
   }
 }
 
+function parseModifierGroup(n: any): IrModifierGroup {
+  return {
+    type: String(n['@_type'] ?? 'and'),
+    modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    conditions: arr<any>(n.conditions?.condition).map(parseCondition),
+    conditionGroups: arr<any>(n.conditionGroups?.conditionGroup).map(parseConditionGroup),
+    modifierGroups: arr<any>(n.modifierGroups?.modifierGroup).map(parseModifierGroup),
+  }
+}
+
 // ---- structural node parsers (mutually recursive) ----
 
 function parseSelectionEntry(n: any): IrSelectionEntry {
+  const mg = arr<any>(n.modifierGroups?.modifierGroup).map(parseModifierGroup)
   return {
     id: String(n['@_id'] ?? ''),
     name: String(n['@_name'] ?? ''),
@@ -174,6 +185,7 @@ function parseSelectionEntry(n: any): IrSelectionEntry {
     categoryLinks: arr<any>(n.categoryLinks?.categoryLink).map(parseCategoryLink),
     costs: arr<any>(n.costs?.cost).map(parseCost),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    ...(mg.length > 0 ? { modifierGroups: mg } : {}),
     selectionEntries: arr<any>(n.selectionEntries?.selectionEntry).map(parseSelectionEntry),
     selectionEntryGroups: arr<any>(n.selectionEntryGroups?.selectionEntryGroup).map(parseSelectionEntryGroup),
     entryLinks: arr<any>(n.entryLinks?.entryLink).map(parseEntryLink),
@@ -181,6 +193,7 @@ function parseSelectionEntry(n: any): IrSelectionEntry {
 }
 
 function parseSelectionEntryGroup(n: any): IrSelectionEntryGroup {
+  const mg = arr<any>(n.modifierGroups?.modifierGroup).map(parseModifierGroup)
   return {
     id: String(n['@_id'] ?? ''),
     name: String(n['@_name'] ?? ''),
@@ -192,6 +205,7 @@ function parseSelectionEntryGroup(n: any): IrSelectionEntryGroup {
       : {}),
     constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    ...(mg.length > 0 ? { modifierGroups: mg } : {}),
     selectionEntries: arr<any>(n.selectionEntries?.selectionEntry).map(parseSelectionEntry),
     selectionEntryGroups: arr<any>(n.selectionEntryGroups?.selectionEntryGroup).map(parseSelectionEntryGroup),
     entryLinks: arr<any>(n.entryLinks?.entryLink).map(parseEntryLink),
@@ -199,6 +213,7 @@ function parseSelectionEntryGroup(n: any): IrSelectionEntryGroup {
 }
 
 function parseEntryLink(n: any): IrEntryLink {
+  const mg = arr<any>(n.modifierGroups?.modifierGroup).map(parseModifierGroup)
   return {
     id: String(n['@_id'] ?? ''),
     name: String(n['@_name'] ?? ''),
@@ -212,6 +227,7 @@ function parseEntryLink(n: any): IrEntryLink {
     constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
     costs: arr<any>(n.costs?.cost).map(parseCost),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    ...(mg.length > 0 ? { modifierGroups: mg } : {}),
     profiles: arr<any>(n.profiles?.profile).map(parseProfile),
     infoLinks: arr<any>(n.infoLinks?.infoLink).map(parseInfoLink),
     categoryLinks: arr<any>(n.categoryLinks?.categoryLink).map(parseCategoryLink),
@@ -238,6 +254,7 @@ function parseForceEntry(n: any): IrForceEntry {
     id: String(n['@_id'] ?? ''),
     name: String(n['@_name'] ?? ''),
     hidden: bool(n['@_hidden']),
+    constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
     categoryLinks: arr<any>(n.categoryLinks?.categoryLink).map(parseForceCategoryLink),
     rules: arr<any>(n.rules?.rule).map(parseRule),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),

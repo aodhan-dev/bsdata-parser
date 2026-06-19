@@ -1,6 +1,6 @@
 {
   "name": "bsdata-parser",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "type": "module",
   "description": "Faithful BSData .gst/.cat XML parser: parses game-data source files into a typed IR and exposes a golden-diff harness for validating a downstream projection.",

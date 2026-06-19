@@ -13,4 +13,4 @@ export function buildCatalogue(files: Record<string, string>): Record<string, un
 
 export { parseToIr } from './parse/index.ts'
 export { projectCatalogue } from './project/catalogue.ts'
-export type { Ir, IrCatalogueFile } from './ir/types.ts'
+export type { Ir, IrCatalogueFile, IrModifierGroup } from './ir/types.ts'
