@@ -9,6 +9,8 @@
     "dist"
   ],
   "scripts": {
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run",
     "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
