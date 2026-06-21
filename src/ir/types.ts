@@ -154,6 +154,7 @@ export interface IrEntryLink {
   hidden: boolean
   collective: boolean
   import: boolean
+  flatten: boolean
   targetId: string
   type: string
   defaultAmount?: number
