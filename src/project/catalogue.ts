@@ -1,4 +1,4 @@
-import type { Ir } from '../ir/types.ts'
+import type { Ir } from '../ir/types'
 
 /**
  * IR -> downstream projection.
@@ -12,7 +12,8 @@ import type { Ir } from '../ir/types.ts'
  * (so the existing consumer keeps working unchanged), and MAY add fields the current consumer lacks.
  * The golden-diff harness asserts the reproduction half; new fields are additive and ignored.
  *
- * STUB. Build it test-first against the BSData XML as source of truth (see CLAUDE.md).
+ * STUB. Supply a local implementation that imports your projector modules. The local file is
+ * gitignored so it never reaches this public repo. See CLAUDE.md for the hygiene rule.
  */
 export function projectCatalogue(_ir: Ir): Record<string, unknown> {
   return {}

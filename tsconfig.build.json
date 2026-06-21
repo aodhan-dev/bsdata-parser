@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", "module": "ESNext", "moduleResolution": "bundler",
+    "declaration": true, "sourceMap": true, "outDir": "dist", "strict": true,
+    "skipLibCheck": true, "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/cli.ts"]
+}

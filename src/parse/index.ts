@@ -1,15 +1,12 @@
-import type { Ir } from '../ir/types.ts'
+import type { Ir } from '../ir/types'
+import { parseFile } from './xml'
 
-/**
- * XML source set -> faithful IR.
- *
- * Input is a `filename -> XML string` map covering the `.gst` game system plus every `.cat`
- * catalogue. Pure (no fs), so the same map drives the CLI, the golden-diff harness, and any future
- * runtime path identically.
- *
- * NOT IMPLEMENTED YET. This is the scaffold's red baseline: the golden-diff harness runs, this does
- * not. Build it test-first against the BSData XML as source of truth (see CLAUDE.md).
- */
-export function parseToIr(_files: Record<string, string>): Ir {
-  throw new Error('parseToIr: not implemented yet (scaffold). Build XML -> IR test-first.')
+export function parseToIr(files: Record<string, string>): Ir {
+  const parsed = Object.entries(files).map(([filename, xml]) => parseFile(filename, xml))
+  const gameSystem = parsed.find(f => f.kind === 'gameSystem')
+  if (!gameSystem) throw new Error('parseToIr: no .gst file in source set')
+  return {
+    gameSystem,
+    catalogues: parsed.filter(f => f.kind === 'catalogue'),
+  }
 }

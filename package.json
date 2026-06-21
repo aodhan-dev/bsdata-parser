@@ -1,24 +1,12 @@
 {
   "name": "bsdata-parser",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "license": "MIT",
-  "private": true,
   "type": "module",
-  "description": "Faithful BSData -> IR parser with a golden-diff harness for validating a downstream projection against a reference output.",
-  "scripts": {
-    "build": "tsx src/cli.ts",
-    "golden": "tsx harness/golden-diff.ts",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@types/node": "^20.19.41",
-    "tsx": "^4.0.0",
-    "typescript": "^5.3.0",
-    "vitest": "^1.6.1"
-  },
-  "dependencies": {
-    "fast-xml-parser": "^4.5.6"
-  }
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc -p tsconfig.build.json" },
+  "dependencies": { "fast-xml-parser": "^4.5.6" },
+  "devDependencies": { "typescript": "^5.3.0", "@types/node": "^20.19.41", "vitest": "^1.6.1" }
 }

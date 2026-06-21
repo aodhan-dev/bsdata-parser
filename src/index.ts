@@ -1,5 +1,5 @@
-import { parseToIr } from './parse/index.ts'
-import { projectCatalogue } from './project/catalogue.ts'
+import { parseToIr } from './parse/index'
+import { projectCatalogue } from './project/catalogue'
 
 /**
  * Public entry point. `filename -> XML` map in, projected output object out. The signature matches
@@ -11,6 +11,6 @@ export function buildCatalogue(files: Record<string, string>): Record<string, un
   return projectCatalogue(ir)
 }
 
-export { parseToIr } from './parse/index.ts'
-export { projectCatalogue } from './project/catalogue.ts'
-export type { Ir, IrCatalogueFile } from './ir/types.ts'
+export { parseToIr } from './parse/index'
+export { projectCatalogue } from './project/catalogue'
+export type { Ir, IrCatalogueFile, IrModifierGroup } from './ir/types'
