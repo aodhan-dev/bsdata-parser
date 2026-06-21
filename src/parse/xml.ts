@@ -220,6 +220,7 @@ function parseEntryLink(n: any): IrEntryLink {
     hidden: bool(n['@_hidden']),
     collective: bool(n['@_collective']),
     import: bool(n['@_import']),
+    flatten: bool(n['@_flatten']),
     targetId: String(n['@_targetId'] ?? ''),
     type: String(n['@_type'] ?? ''),
     ...(n['@_defaultAmount'] != null ? { defaultAmount: Number(n['@_defaultAmount']) } : {}),

@@ -337,3 +337,33 @@ describe('parseToIr - catalogue metadata', () => {
     expect(ir.gameSystem.root.entryLinks[0]).toMatchObject({ id: 'root-el-001', targetId: 'se-tactical', type: 'selectionEntry' })
   })
 })
+
+// ---- flatten attribute on entryLinks ----
+
+const CAT_WITH_FLATTEN = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogue id="cat-001" name="Test" revision="1" battleScribeVersion="2.03" gameSystemId="gst-001" gameSystemRevision="1" xmlns="http://www.battlescribe.net/schema/catalogueSchema">
+  <sharedSelectionEntries>
+    <selectionEntry id="se-001" name="Palatine" hidden="false" collective="false" import="true" type="unit">
+      <selectionEntryGroups>
+        <selectionEntryGroup id="seg-001" name="May exchange blade for:" hidden="false" collective="false" import="true">
+          <entryLinks>
+            <entryLink id="el-flat" name="Power Weapon" hidden="false" import="true" targetId="seg-shared-pw" type="selectionEntryGroup" flatten="true"/>
+            <entryLink id="el-plain" name="Phoenix rapier" hidden="false" import="true" targetId="se-rapier" type="selectionEntry"/>
+          </entryLinks>
+        </selectionEntryGroup>
+      </selectionEntryGroups>
+    </selectionEntry>
+  </sharedSelectionEntries>
+</catalogue>`
+
+describe('parseToIr - flatten attribute', () => {
+  const files = { 'system.gst': GST_HEADER, 'cat.cat': CAT_WITH_FLATTEN }
+
+  it('preserves flatten=true on a group link and defaults to false when absent', () => {
+    const ir = parseToIr(files)
+    const links = ir.catalogues[0]!.root.sharedSelectionEntries[0]!.selectionEntryGroups[0]!.entryLinks
+    const byId = Object.fromEntries(links.map(l => [l.id, l]))
+    expect(byId['el-flat']!.flatten).toBe(true)
+    expect(byId['el-plain']!.flatten).toBe(false)
+  })
+})

@@ -1,10 +1,16 @@
 {
   "name": "bsdata-parser",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "license": "MIT",
   "type": "module",
   "description": "Faithful BSData .gst/.cat XML parser: parses game-data source files into a typed IR and exposes a golden-diff harness for validating a downstream projection.",
-  "keywords": ["bsdata", "battlescribe", "parser", "xml", "game-data"],
+  "keywords": [
+    "bsdata",
+    "battlescribe",
+    "parser",
+    "xml",
+    "game-data"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/aodhan-dev/bsdata-parser.git"
