@@ -1,0 +1,24 @@
+name: Deprecate
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version range to deprecate (e.g. 0.1.2)'
+        required: true
+      message:
+        description: 'Deprecation message'
+        required: true
+
+jobs:
+  deprecate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm deprecate "bsdata-parser@${{ inputs.version }}" "${{ inputs.message }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
