@@ -3,6 +3,10 @@
   "version": "0.1.2",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aodhan-dev/bsdata-parser.git"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
