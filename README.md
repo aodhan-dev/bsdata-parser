@@ -17,7 +17,7 @@ BSData (.gst/.cat)  ──parse──▶  IR (faithful tree)  ──project─�
                                        reference output  ◀───diff───────┘
 ```
 
-- **`src/parse`** - XML to IR. Mechanical transcription only: no interpretation, no flattening, no domain knowledge. Every modifier, condition, constraint, and repeat node is preserved verbatim.
+- **`src/parse`** - XML to IR. Mechanical transcription only: no interpretation, no flattening, no domain knowledge. Every modifier, condition, constraint, and repeat node is preserved verbatim, as are node attributes - including the `flatten` attribute on entry links, so consumers can honor BSData's "inline this group into its parent" semantics instead of emitting a duplicate sub-group.
 - **`src/project`** - IR to output. All domain interpretation lives here. This layer is intentionally not included in the package - you supply it, shaped to your own output schema.
 - **`harness/`** - golden-diff utilities. Load a reference output (oracle) and diff a candidate against it to find gaps. Auto-skips when no local data is present, so the test suite runs cleanly everywhere.
 
