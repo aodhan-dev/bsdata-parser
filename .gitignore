@@ -23,3 +23,6 @@ oracle.json
 /src/project/*.ts
 !/src/project/catalogue.ts
 /src/project/*/
+
+# Local Claude navigation aid - not a repo artifact
+CODEMAP.md
