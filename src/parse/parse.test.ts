@@ -367,3 +367,23 @@ describe('parseToIr - flatten attribute', () => {
     expect(byId['el-plain']!.flatten).toBe(false)
   })
 })
+
+const CAT_WITH_FLATTEN_GROUP = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogue id="cat-001" name="Test" revision="1" battleScribeVersion="2.03" gameSystemId="gst-001" gameSystemRevision="1" xmlns="http://www.battlescribe.net/schema/catalogueSchema">
+  <sharedSelectionEntryGroups>
+    <selectionEntryGroup id="seg-flat" name="Power Weapon" hidden="false" collective="false" import="true" flatten="true"/>
+    <selectionEntryGroup id="seg-plain" name="Melee Weapon" hidden="false" collective="false" import="true"/>
+  </sharedSelectionEntryGroups>
+</catalogue>`
+
+describe('parseToIr - flatten attribute on groups', () => {
+  const files = { 'system.gst': GST_HEADER, 'cat.cat': CAT_WITH_FLATTEN_GROUP }
+
+  it('preserves flatten=true on a selectionEntryGroup and defaults to false when absent', () => {
+    const ir = parseToIr(files)
+    const groups = ir.catalogues[0]!.root.sharedSelectionEntryGroups
+    const byId = Object.fromEntries(groups.map(g => [g.id, g]))
+    expect(byId['seg-flat']!.flatten).toBe(true)
+    expect(byId['seg-plain']!.flatten).toBe(false)
+  })
+})

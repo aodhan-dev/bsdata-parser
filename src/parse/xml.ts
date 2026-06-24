@@ -200,6 +200,7 @@ function parseSelectionEntryGroup(n: any): IrSelectionEntryGroup {
     hidden: bool(n['@_hidden']),
     collective: bool(n['@_collective']),
     import: bool(n['@_import']),
+    flatten: bool(n['@_flatten']),
     ...(n['@_defaultSelectionEntryId'] != null
       ? { defaultSelectionEntryId: String(n['@_defaultSelectionEntryId']) }
       : {}),

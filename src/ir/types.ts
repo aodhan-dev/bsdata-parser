@@ -139,6 +139,7 @@ export interface IrSelectionEntryGroup {
   hidden: boolean
   collective: boolean
   import: boolean
+  flatten: boolean
   defaultSelectionEntryId?: string
   constraints: IrConstraint[]
   modifiers: IrModifier[]
