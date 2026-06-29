@@ -205,6 +205,7 @@ function parseSelectionEntryGroup(n: any): IrSelectionEntryGroup {
       ? { defaultSelectionEntryId: String(n['@_defaultSelectionEntryId']) }
       : {}),
     constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
+    rules: arr<any>(n.rules?.rule).map(parseRule),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
     ...(mg.length > 0 ? { modifierGroups: mg } : {}),
     selectionEntries: arr<any>(n.selectionEntries?.selectionEntry).map(parseSelectionEntry),
@@ -227,6 +228,7 @@ function parseEntryLink(n: any): IrEntryLink {
     ...(n['@_defaultAmount'] != null ? { defaultAmount: Number(n['@_defaultAmount']) } : {}),
     ...(n.comment != null ? { comment: String(n.comment).trim() } : {}),
     constraints: arr<any>(n.constraints?.constraint).map(parseConstraint),
+    rules: arr<any>(n.rules?.rule).map(parseRule),
     costs: arr<any>(n.costs?.cost).map(parseCost),
     modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
     ...(mg.length > 0 ? { modifierGroups: mg } : {}),

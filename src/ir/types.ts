@@ -142,6 +142,7 @@ export interface IrSelectionEntryGroup {
   flatten: boolean
   defaultSelectionEntryId?: string
   constraints: IrConstraint[]
+  rules: IrRule[]
   modifiers: IrModifier[]
   modifierGroups?: IrModifierGroup[]
   selectionEntries: IrSelectionEntry[]
@@ -161,6 +162,7 @@ export interface IrEntryLink {
   defaultAmount?: number
   comment?: string
   constraints: IrConstraint[]
+  rules: IrRule[]
   costs: IrCost[]
   modifiers: IrModifier[]
   modifierGroups?: IrModifierGroup[]

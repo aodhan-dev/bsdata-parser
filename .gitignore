@@ -26,3 +26,8 @@ oracle.json
 
 # Local Claude navigation aid - not a repo artifact
 CODEMAP.md
+
+# Tool artifacts that should never be committed
+.playwright-mcp/
+.svelte-kit/
+.claude/
