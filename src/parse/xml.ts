@@ -92,12 +92,15 @@ function parseRule(n: any): IrRule {
 }
 
 function parseInfoLink(n: any): IrInfoLink {
+  const mg = arr<any>(n.modifierGroups?.modifierGroup).map(parseModifierGroup)
   return {
     id: String(n['@_id'] ?? ''),
     name: String(n['@_name'] ?? ''),
     hidden: bool(n['@_hidden']),
     targetId: String(n['@_targetId'] ?? ''),
     type: String(n['@_type'] ?? ''),
+    modifiers: arr<any>(n.modifiers?.modifier).map(parseModifier),
+    ...(mg.length > 0 ? { modifierGroups: mg } : {}),
   }
 }
 

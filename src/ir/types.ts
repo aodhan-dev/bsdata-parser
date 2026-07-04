@@ -51,6 +51,8 @@ export interface IrInfoLink {
   hidden: boolean
   targetId: string
   type: string
+  modifiers: IrModifier[]
+  modifierGroups?: IrModifierGroup[]
 }
 
 export interface IrCategoryLink {

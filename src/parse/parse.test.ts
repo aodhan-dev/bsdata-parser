@@ -387,3 +387,31 @@ describe('parseToIr - flatten attribute on groups', () => {
     expect(byId['seg-plain']!.flatten).toBe(false)
   })
 })
+
+// ---- infoLink modifiers ----
+
+const CAT_WITH_INFOLINK_MODIFIER = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogue id="cat-001" name="Test" revision="1" battleScribeVersion="2.03" gameSystemId="gst-001" gameSystemRevision="1" xmlns="http://www.battlescribe.net/schema/catalogueSchema">
+  <sharedSelectionEntries>
+    <selectionEntry id="se-001" name="Tactical Legionary" hidden="false" collective="false" import="true" type="unit">
+      <infoLinks>
+        <infoLink id="il-001" name="Bolter" hidden="false" targetId="shared-bolter" type="selectionEntry">
+          <modifiers>
+            <modifier type="replace" field="name" value="Renamed Bolter"/>
+          </modifiers>
+        </infoLink>
+      </infoLinks>
+    </selectionEntry>
+  </sharedSelectionEntries>
+</catalogue>`
+
+describe('parseToIr - infoLink modifiers', () => {
+  const files = { 'system.gst': GST_HEADER, 'cat.cat': CAT_WITH_INFOLINK_MODIFIER }
+
+  it('retains the replace|name modifier on an infoLink', () => {
+    const ir = parseToIr(files)
+    const infoLink = ir.catalogues[0]!.root.sharedSelectionEntries[0]!.infoLinks[0]!
+    expect(infoLink.modifiers).toHaveLength(1)
+    expect(infoLink.modifiers[0]).toMatchObject({ type: 'replace', field: 'name', value: 'Renamed Bolter' })
+  })
+})
