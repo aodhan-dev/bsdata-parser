@@ -149,7 +149,7 @@ function parseRepeat(n: any): IrRepeat {
 }
 
 function parseModifier(n: any): IrModifier {
-  return {
+  const out: IrModifier = {
     type: String(n['@_type'] ?? ''),
     field: String(n['@_field'] ?? ''),
     value: n['@_value'] ?? '',
@@ -157,6 +157,8 @@ function parseModifier(n: any): IrModifier {
     conditionGroups: arr<any>(n.conditionGroups?.conditionGroup).map(parseConditionGroup),
     repeats: arr<any>(n.repeats?.repeat).map(parseRepeat),
   }
+  if (n['@_arg'] != null) out.arg = String(n['@_arg'])
+  return out
 }
 
 function parseModifierGroup(n: any): IrModifierGroup {

@@ -414,4 +414,20 @@ describe('parseToIr - infoLink modifiers', () => {
     expect(infoLink.modifiers).toHaveLength(1)
     expect(infoLink.modifiers[0]).toMatchObject({ type: 'replace', field: 'name', value: 'Renamed Bolter' })
   })
+
+  it('captures the arg attribute on a parameterized replace|name modifier', () => {
+    const catWithArg = CAT_WITH_INFOLINK_MODIFIER.replace(
+      '<modifier type="replace" field="name" value="Renamed Bolter"/>',
+      '<modifier type="replace" value="2" field="name" arg="X"/>',
+    )
+    const ir = parseToIr({ 'system.gst': GST_HEADER, 'cat.cat': catWithArg })
+    const infoLink = ir.catalogues[0]!.root.sharedSelectionEntries[0]!.infoLinks[0]!
+    expect(infoLink.modifiers[0]).toMatchObject({ type: 'replace', field: 'name', value: 2, arg: 'X' })
+  })
+
+  it('omits arg when the modifier does not carry one', () => {
+    const ir = parseToIr(files)
+    const infoLink = ir.catalogues[0]!.root.sharedSelectionEntries[0]!.infoLinks[0]!
+    expect(infoLink.modifiers[0]!.arg).toBeUndefined()
+  })
 })

@@ -87,6 +87,7 @@ export interface IrModifier {
   conditions: IrCondition[]
   conditionGroups: IrConditionGroup[]
   repeats: IrRepeat[]
+  arg?: string
 }
 
 /**
